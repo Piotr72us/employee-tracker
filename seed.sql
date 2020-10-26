@@ -17,7 +17,7 @@ PRIMARY KEY (id)
 CREATE TABLE role (
 id INT (10),
 title VARCHAR(30),
-salary DECIMAL(10,1),
+salary DECIMAL(7,0),
 department_id INT(10),
 PRIMARY KEY (id)
 );

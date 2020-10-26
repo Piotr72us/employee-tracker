@@ -1,6 +1,8 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 
+// const cTable = require('console.table');
+
 var connection = mysql.createConnection({
   host: "localhost",
   // port; if not 3306
@@ -30,10 +32,13 @@ function runSearch() {
         "View All Employees By Department",
         "View All Employees By Manager",
         "Add Employee",
+        "Add Role",
+        "Add Department",
         "Remove Employee",
         "Update Employee Role",
         "Update Employee Manager",
-        "View All Roles"
+        "View All Roles",
+        "View All Departments"
       ] 
     })
     .then(function(answer) {
@@ -54,6 +59,14 @@ function runSearch() {
         addEmployee();
         break;
 
+      case "Add Role":
+        addRole();
+        break;
+
+      case "Add Department":
+        addDepartment();
+        break;
+
       case "Remove Employee":
         removeEmployee();
         break;
@@ -70,13 +83,21 @@ function runSearch() {
         viewRoles();
         break;
 
+      case "View All Departments":
+        viewDepartments();
+        break;
+
       }
     });
 }
 
 function viewAll() {
+  // doesnt' work
+  // const query = "SELECT first_name, last_name, manager_id FROM employee INNER JOIN role ON employee.role_id = role.id";
+  // works
   const query = "SELECT * FROM employee";
-  
+
+
   connection.query(query, function(err, res) {
     if(err) throw err;
     console.table(res);
@@ -85,7 +106,17 @@ function viewAll() {
 }
 
 function viewRoles() {
-  const query = "SELECT title FROM role";
+  const query = "SELECT * FROM role";
+  
+  connection.query(query, function(err, res) {
+    if(err) throw err;
+    console.table(res);
+    runSearch();
+  });
+}
+
+function viewDepartments() {
+  const query = "SELECT * FROM department";
   
   connection.query(query, function(err, res) {
     if(err) throw err;
@@ -249,6 +280,109 @@ function addEmployee() {
         function(err, res) {
           if (err) throw err;
           console.log(res.affectedRows + " Employee added!\n");
+        }
+      );    
+      // logs the actual query being run
+      // console.log(query.sql);
+      runSearch();
+    });
+}
+
+function addRole() {
+  inquirer
+    .prompt([
+      {
+        name: "id",
+        type: "input",
+        message: "What is your new role ID?"
+      },
+      {
+        name: "title",
+        type: "input",
+        message: "What is your new role title?"
+      },
+      {
+        name: "salary",
+        type: "input",
+        message: "What is your new role salary?"
+      },
+      {
+        name: "department_id",
+        type: "input",
+        message: "What is your new role department ID?"
+      }
+    ])
+    .then(function(answer) { 
+
+      connection.query(
+        "INSERT INTO role SET ?",
+        {
+          id: answer.id,
+          title: answer.title,
+          salary: answer.salary,
+          department_id: answer.department_id
+        },
+        function(err, res) {
+          if (err) throw err;
+          console.log(res.affectedRows + " New role added!\n");
+        }
+      );    
+      viewRoles();
+    });
+}
+
+function addDepartment() {
+  inquirer
+    .prompt([
+      {
+        name: "name",
+        type: "input",
+        message: "What is your new department name?"
+      }
+    ])
+    .then(function(answer) { 
+
+      connection.query(
+        "INSERT INTO department SET ?",
+        {
+          name: answer.name
+        },
+        function(err, res) {
+          if (err) throw err;
+          console.log(res.affectedRows + " new department added!\n");
+        }
+      );    
+      viewDepartments();
+    });
+}
+
+
+function updateRole() {
+  inquirer
+    .prompt([
+      {
+        name: "first_name",
+        type: "input",
+        message: "What is your new employee first name?"
+      },
+      {
+        name: "last_name",
+        type: "input",
+        message: "What is your new employee last name?"
+      },
+      {
+        name: "role_id",
+        type: "input",
+        message: "What is your employee new role ID?"
+      }
+    ])
+    .then(function(answer) { 
+
+      connection.query(
+        `UPDATE employee SET role_id = "${answer.role_id}" WHERE first_name = "${answer.first_name}"`,
+        function(err, res) {
+          if (err) throw err;
+          console.log(res.affectedRows + " Role updated!\n");
         }
       );
     
