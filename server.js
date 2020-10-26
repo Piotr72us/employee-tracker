@@ -384,13 +384,39 @@ function updateRole() {
           if (err) throw err;
           console.log(res.affectedRows + " Role updated!\n");
         }
-      );
-    
+      );    
       // logs the actual query being run
       // console.log(query.sql);
       runSearch();
-
     });
+}
 
+function removeEmployee(){
+  inquirer
+  .prompt([
+    {
+      name: "first_name",
+      type: "input",
+      message: "What is the first name of the employee you want to remove?"
+    },
+    {
+      name: "last_name",
+      type: "input",
+      message: "What is the last name of the employee you want to remove?"
+    }
+  ])
+  .then(function(answer) { 
+
+    connection.query(
+      `DELETE FROM employee WHERE first_name = "${answer.first_name}"`,
+      function(err, res) {
+        if (err) throw err;
+        console.log(res.affectedRows + " employee removed!\n");
+      }
+    );    
+    // logs the actual query being run
+    // console.log(query.sql);
+    runSearch();
+  });
 
 }
