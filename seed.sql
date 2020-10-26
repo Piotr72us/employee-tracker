@@ -49,13 +49,13 @@ VALUE (101, "Sales Lead", 100000, 1),
 
 -- Inserts a set of records into the "employee" table
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUE ("John", "Doe", 251, 3),
-      ("Mike", "Chan", 250, 1),
-      ("Ashley", "Rodriguez", 340, NULL),
-      ("Kevin", "Tupik", 342, 3),
-      ("Malia", "Brown", 410, NULL),
-      ("Sarah", "Lourd", 520, NULL),
-      ("Tom", "Allen", 525, 6);
+VALUE ("John", "Doe", 101, 3),
+      ("Mike", "Chan", 102, 1),
+      ("Ashley", "Rodriguez", 201, NULL),
+      ("Kevin", "Tupik", 202, 3),
+      ("Malia", "Brown", 401, NULL),
+      ("Sarah", "Lourd", 301, NULL),
+      ("Tom", "Allen", 302, 6);
 
 
 SELECT * FROM department;

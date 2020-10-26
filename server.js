@@ -12,7 +12,7 @@ var connection = mysql.createConnection({
   user: "root",
 
   // password
-  password: "1410Wilno",
+  password: "password",
   database: "employee_tracker"
 });
 
@@ -99,8 +99,8 @@ function runSearch() {
 function viewAll() {
   // doesnt' work
   // const query = "SELECT first_name, last_name, manager_id FROM employee INNER JOIN role ON employee.role_id = role.id";
-  // works
-  const query = "SELECT * FROM employee";
+  // doesn't works
+  const query = "SELECT employee.id, first_name, last_name, title, salary FROM employee JOIN role ON employee.role_id = role.id";
 
 
   connection.query(query, function(err, res) {
