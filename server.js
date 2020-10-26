@@ -38,7 +38,8 @@ function runSearch() {
         "Update Employee Role",
         "Update Employee Manager",
         "View All Roles",
-        "View All Departments"
+        "View All Departments",
+        "Exit"
       ] 
     })
     .then(function(answer) {
@@ -85,6 +86,10 @@ function runSearch() {
 
       case "View All Departments":
         viewDepartments();
+        break;
+
+      case "Exit":
+        connection.end();
         break;
 
       }
@@ -363,12 +368,12 @@ function updateRole() {
       {
         name: "first_name",
         type: "input",
-        message: "What is your new employee first name?"
+        message: "What is your employee first name?"
       },
       {
         name: "last_name",
         type: "input",
-        message: "What is your new employee last name?"
+        message: "What is your employee last name?"
       },
       {
         name: "role_id",
@@ -379,7 +384,7 @@ function updateRole() {
     .then(function(answer) { 
 
       connection.query(
-        `UPDATE employee SET role_id = "${answer.role_id}" WHERE first_name = "${answer.first_name}"`,
+        `UPDATE employee SET role_id = "${answer.role_id}" WHERE (first_name = "${answer.first_name}" AND last_name = "${answer.last_name}")`,
         function(err, res) {
           if (err) throw err;
           console.log(res.affectedRows + " Role updated!\n");
@@ -408,7 +413,7 @@ function removeEmployee(){
   .then(function(answer) { 
 
     connection.query(
-      `DELETE FROM employee WHERE first_name = "${answer.first_name}"`,
+      `DELETE FROM employee WHERE (first_name = "${answer.first_name}" AND last_name="${answer.last_name}")`,
       function(err, res) {
         if (err) throw err;
         console.log(res.affectedRows + " employee removed!\n");
