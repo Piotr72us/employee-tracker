@@ -243,9 +243,23 @@ function addEmployee() {
           return data.title === answer.title;
         })
 
-        console.log(roleObject);
+        // console.log(roleObject);
         const roleId = roleObject.id;
         console.log(answer.title, roleId);
+
+        connection.query(
+          "INSERT INTO employee SET ?",
+          {
+            first_name: answer.first_name,
+            last_name: answer.last_name,
+            role_id: roleId,
+            // salary: answer.salary,
+            manager_id: answer.manager_id
+          },
+          function (err, res) {
+            if (err) throw err;
+            console.log(res.affectedRows + " new employee added!\n");
+          })
 
         runSearch();
       });
