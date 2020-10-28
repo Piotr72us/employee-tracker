@@ -1,16 +1,14 @@
+// Dependencies
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-
-const cTable = require('console.table');
+const cTable = require("console.table");
 
 var connection = mysql.createConnection({
   host: "localhost",
-  // port; if not 3306
+  // port; if not default 3306
   port: 3306,
-
   // username
   user: "root",
-
   // password
   password: "1410Wilno",
   database: "employee_tracker"
@@ -25,7 +23,7 @@ function runSearch() {
   inquirer
     .prompt({
       name: "action",
-      type: "list",
+      type: "rawlist",
       message: "What would you like to do?",
       choices: [
         "View All Employees",
@@ -97,15 +95,11 @@ function runSearch() {
 }
 
 function viewAll() {
-  // doesnt' work
-  // const query = "SELECT first_name, last_name, manager_id FROM employee INNER JOIN role ON employee.role_id = role.id";
-  // doesn't works
-  // const query = "SELECT employee.id, first_name, last_name, title, salary FROM employee JOIN role ON employee.role_id = role.id";
+
   const query = `SELECT employee.id, employee.first_name, employee.last_name, title, salary, name department, concat(manager.first_name, " ", manager.last_name) manager FROM employee 
   LEFT JOIN role ON employee.role_id = role.id
   LEFT JOIN department ON role.department_id = department.id
-  LEFT JOIN employee manager ON manager.id = employee.manager_id;`
-    ;
+  LEFT JOIN employee manager ON manager.id = employee.manager_id;`;
 
   connection.query(query, function (err, res) {
     if (err) throw err;
@@ -145,52 +139,6 @@ function viewByDept() {
 
   });
 }
-
-// function rangeSearch() {
-//   inquirer
-//     .prompt([
-//       {
-//         name: "start",
-//         type: "input",
-//         message: "Enter starting position: ",
-//         validate: function(value) {
-//           if (isNaN(value) === false) {
-//             return true;
-//           }
-//           return false;
-//         }
-//       },
-//       {
-//         name: "end",
-//         type: "input",
-//         message: "Enter ending position: ",
-//         validate: function(value) {
-//           if (isNaN(value) === false) {
-//             return true;
-//           }
-//           return false;
-//         }
-//       }
-//     ])
-//     .then(function(answer) {
-//       var query = "SELECT position,song,artist,year FROM top5000 WHERE position BETWEEN ? AND ?";
-//       connection.query(query, [answer.start, answer.end], function(err, res) {
-//         for (var i = 0; i < res.length; i++) {
-//           console.log(
-//             "Position: " +
-//               res[i].position +
-//               " || Song: " +
-//               res[i].song +
-//               " || Artist: " +
-//               res[i].artist +
-//               " || Year: " +
-//               res[i].year
-//           );
-//         }
-//         runSearch();
-//       });
-//     });
-// }
 
 // function songSearch() {
 //   inquirer
@@ -254,18 +202,16 @@ function viewByDept() {
 function search(sql) {
   return new Promise( (resolve, reject) =>{
     connection.query(sql, (error, data)=> {
-      resolve(data)
+      resolve(data);
     })
   })
 }
 
 function addEmployee() {
-
   search("SELECT id, title FROM role").then((roleData)=> {
     const newRoles = roleData.map( (results)=> {
-      return results.title
+      return results.title;
     })
-
 
     inquirer
       .prompt([
@@ -297,33 +243,13 @@ function addEmployee() {
           return data.title === answer.title;
         })
 
-         console.log(roleObject)
-         const roleId = roleObject.id
-        console.log(answer.title, roleId)
-        // connection.query(
-        //   "INSERT INTO employee SET ?",
-        //   {
-        //     first_name: answer.first_name,
-        //     last_name: answer.last_name,
-        //     role_id: answer.role_id,
-        //     manager_id: answer.manager_id
-        //   },
-        //   function(err, res) {
-        //     if (err) throw err;
-        //     console.log(res.affectedRows + " Employee added!\n");
-        //   }
-        // );    
-        // logs the actual query being run
-        // console.log(query.sql);
+        console.log(roleObject);
+        const roleId = roleObject.id;
+        console.log(answer.title, roleId);
+
         runSearch();
       });
-
-
-
   })
-
-
-
 }
 
 function addRole() {
@@ -379,7 +305,6 @@ function addDepartment() {
       }
     ])
     .then(function (answer) {
-
       connection.query(
         "INSERT INTO department SET ?",
         {
@@ -423,8 +348,7 @@ function updateRole() {
           console.log(res.affectedRows + " Role updated!\n");
         }
       );
-      // logs the actual query being run
-      // console.log(query.sql);
+
       runSearch();
     });
 }
@@ -452,8 +376,6 @@ function removeEmployee() {
           console.log(res.affectedRows + " employee removed!\n");
         }
       );
-      // logs the actual query being run
-      // console.log(query.sql);
       runSearch();
     });
 
