@@ -28,15 +28,14 @@ function runSearch() {
       choices: [
         "View All Employees",
         "View All Employees By Department",
-        "View All Employees By Manager",
+        "View All Roles",
+        "View All Departments",
         "Add Employee",
         "Add Role",
         "Add Department",
         "Remove Employee",
         "Update Employee Role",
         "Update Employee Manager",
-        "View All Roles",
-        "View All Departments",
         "Exit"
       ]
     })
@@ -50,9 +49,9 @@ function runSearch() {
           viewByDept();
           break;
 
-        case "View All Employees By Manager":
-          viewByMgr();
-          break;
+        // case "View All Employees By Manager":
+        //   viewByMgr();
+        //   break;
 
         case "Add Employee":
           addEmployee();
@@ -130,7 +129,10 @@ function viewDepartments() {
 
 function viewByDept() {
   // for now it shows dept names + roles; it should show dept names + employee names
-  var query = "SELECT * FROM department INNER JOIN role ON department.id = role.department_id ORDER BY role.department_id";
+  var query = `SELECT department.name department, employee.first_name, employee.last_name, role.title FROM department 
+  INNER JOIN role ON department.id = role.department_id 
+  INNER JOIN employee ON employee.role_id = role.id
+  ORDER BY role.department_id;`;
   connection.query(query, function (err, res) {
 
     if (err) throw err;
@@ -211,11 +213,6 @@ function addRole() {
   inquirer
     .prompt([
       {
-        name: "id",
-        type: "input",
-        message: "What is your new role ID?"
-      },
-      {
         name: "title",
         type: "input",
         message: "What is your new role title?"
@@ -236,7 +233,6 @@ function addRole() {
       connection.query(
         "INSERT INTO role SET ?",
         {
-          id: answer.id,
           title: answer.title,
           salary: answer.salary,
           department_id: answer.department_id
