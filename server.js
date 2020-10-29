@@ -130,7 +130,7 @@ function viewDepartments() {
 
 function viewByDept() {
   // for now it shows dept names + roles; it should show dept names + employee names
-  var query = "SELECT * FROM department INNER JOIN role ON department.id = role.department_id";
+  var query = "SELECT * FROM department INNER JOIN role ON department.id = role.department_id ORDER BY role.department_id";
   connection.query(query, function (err, res) {
 
     if (err) throw err;
