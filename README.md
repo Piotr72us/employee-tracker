@@ -42,7 +42,7 @@ After installing, use up and down arrows to acces the section that is of interes
 This application is covered under the MIT license.
 
 ## Contributing
-If you would like to contribute to this project, please let me know. Contact info down below.
+If you would like to contribute to this project, please let me know. Contact info below.
 
 ## Test
 Testing framework used: To be developed.
