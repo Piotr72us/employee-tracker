@@ -140,65 +140,6 @@ function viewByDept() {
   });
 }
 
-// function songSearch() {
-//   inquirer
-//     .prompt({
-//       name: "song",
-//       type: "input",
-//       message: "What song would you like to look for?"
-//     })
-//     .then(function(answer) {
-//       console.log(answer.song);
-//       connection.query("SELECT * FROM top5000 WHERE ?", { song: answer.song }, function(err, res) {
-//         console.log(
-//           "Position: " +
-//             res[0].position +
-//             " || Song: " +
-//             res[0].song +
-//             " || Artist: " +
-//             res[0].artist +
-//             " || Year: " +
-//             res[0].year
-//         );
-//         runSearch();
-//       });
-//     });
-// }
-
-// function songAndAlbumSearch() {
-//   inquirer
-//     .prompt({
-//       name: "artist",
-//       type: "input",
-//       message: "What artist would you like to search for?"
-//     })
-//     .then(function(answer) {
-//       var query = "SELECT top_albums.year, top_albums.album, top_albums.position, top5000.song, top5000.artist ";
-//       query += "FROM top_albums INNER JOIN top5000 ON (top_albums.artist = top5000.artist AND top_albums.year ";
-//       query += "= top5000.year) WHERE (top_albums.artist = ? AND top5000.artist = ?) ORDER BY top_albums.year, top_albums.position";
-
-//       connection.query(query, [answer.artist, answer.artist], function(err, res) {
-//         console.log(res.length + " matches found!");
-//         for (var i = 0; i < res.length; i++) {
-//           console.log(
-//             i+1 + ".) " +
-//               "Year: " +
-//               res[i].year +
-//               " Album Position: " +
-//               res[i].position +
-//               " || Artist: " +
-//               res[i].artist +
-//               " || Song: " +
-//               res[i].song +
-//               " || Album: " +
-//               res[i].album
-//           );
-//         }
-
-//         runSearch();
-//       });
-//     });
-// }
 function search(sql) {
   return new Promise( (resolve, reject) =>{
     connection.query(sql, (error, data)=> {
