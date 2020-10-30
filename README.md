@@ -1,5 +1,5 @@
 
-# Employee EZ-Tracker
+# :fax: :key: :zap: Employee EZ-Tracker :fax: :key: :zap:
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Description
